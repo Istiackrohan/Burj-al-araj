@@ -1,7 +1,11 @@
 import React from 'react';
+import {Link} from 'react-router-dom';
 import Room from '../Room/Room';
+import useAuth from '../Hooks/useAuth';
 
 const Home = () => {
+    const { user, logout } = useAuth();
+
     const style = {
         display: 'flex',
         margin: '40px',
@@ -39,13 +43,21 @@ const Home = () => {
             price: 199
         }
     ]
-    return (
+    return <>
+        <div>
+            {
+                user ? <h1>Welcome {user.displayName}</h1> : <h1>Welcome Guest</h1>
+            }
+            {
+                user ? <button onClick={logout}>Logout</button> : <Link to="/login"><button>Login</button></Link>
+            }
+        </div>
         <div style={style}>
             {
                 rooms.map(room => <Room key={room.bedType} room={room}></Room>)
             }
         </div>
-    );
+    </>;
 };
 
 export default Home;
